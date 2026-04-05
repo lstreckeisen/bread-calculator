@@ -1,0 +1,11 @@
+dist/
+**/.DS_Store/
+node_modules/
+.idea/
+**.iml
+.yarn/**
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brot-Kalkulator</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍞</text></svg>" />
+</head>
+<body>
+  <div class="app">
+
+    <!-- Header -->
+    <header>
+      <h1>Brot-Kalkulator <span>/ Sauerteig</span></h1>
+    </header>
+
+    <!-- 1. Mehlmischung -->
+    <section class="card" id="section-flour">
+      <div class="section-title">Mehlmischung</div>
+      <div id="flour-rows"></div>
+      <button type="button" class="btn" id="add-flour-btn">+ Mehlsorte hinzufügen</button>
+    </section>
+
+    <!-- 2. Grundrezept -->
+    <section class="card" id="section-recipe">
+      <div class="section-title">Grundrezept</div>
+      <div class="form-grid">
+        <div class="field">
+          <label for="hydration">Hydration</label>
+          <div class="input-with-unit">
+            <input type="number" id="hydration" min="40" max="200" step="0.5" />
+            <span class="unit-label">%</span>
+          </div>
+          <div class="hint" id="hydration-hint"></div>
+        </div>
+        <div class="field">
+          <label for="salt-pct">Salzanteil</label>
+          <div class="input-with-unit">
+            <input type="number" id="salt-pct" min="0" max="5" step="0.1" />
+            <span class="unit-label">% vom Mehl</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Levain -->
+    <section class="card" id="section-levain">
+      <div class="section-title">Levain / Anstellgut</div>
+      <div class="mode-toggle">
+        <button type="button" id="levain-mode-a">A — Direktzugabe</button>
+        <button type="button" id="levain-mode-b">B — Levain-Aufbau</button>
+      </div>
+
+      <!-- Mode A -->
+      <div id="levain-panel-a" class="form-grid">
+        <div class="field full">
+          <label>Mehlsorte im Anstellgut</label>
+          <div class="flour-type-row">
+            <select id="levain-flour-grain-a" class="input-select"></select>
+            <select id="levain-flour-type-a" class="input-select"></select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="starter-hydration-a">Anstellgut-Hydration</label>
+          <div class="input-with-unit">
+            <input type="number" id="starter-hydration-a" min="1" max="200" step="1" />
+            <span class="unit-label">%</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="levain-pct-a">Levain-Anteil</label>
+          <div class="input-with-unit">
+            <input type="number" id="levain-pct-a" min="1" max="99" step="1" />
+            <span class="unit-label">% vom Mehl</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mode B -->
+      <div id="levain-panel-b" class="form-grid">
+        <div class="field full">
+          <label>Mehlsorte im Levain</label>
+          <div class="flour-type-row">
+            <select id="levain-flour-grain-b" class="input-select"></select>
+            <select id="levain-flour-type-b" class="input-select"></select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="starter-hydration-b">Anstellgut-Hydration</label>
+          <div class="input-with-unit">
+            <input type="number" id="starter-hydration-b" min="1" max="200" step="1" />
+            <span class="unit-label">%</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="anstellgut-grams">Anstellgut-Menge</label>
+          <div class="input-with-unit">
+            <input type="number" id="anstellgut-grams" min="0" max="500" step="1" />
+            <span class="unit-label">g</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="levain-flour-grams">Levain-Mehl</label>
+          <div class="input-with-unit">
+            <input type="number" id="levain-flour-grams" min="1" max="2000" step="1" />
+            <span class="unit-label">g</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="levain-hydration">Levain-Hydration</label>
+          <div class="input-with-unit">
+            <input type="number" id="levain-hydration" min="1" max="200" step="1" />
+            <span class="unit-label">%</span>
+          </div>
+          <div class="quick-btns" style="margin-top: 0.4rem;">
+            <button type="button" class="btn" id="hyd-quick-50">50%</button>
+            <button type="button" class="btn" id="hyd-quick-100">100%</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Optionale Module -->
+    <section class="card" id="section-optional">
+      <div class="section-title">Optionale Module</div>
+
+      <!-- Autolyse / Bassinage -->
+      <div class="module-header">
+        <input type="checkbox" id="autolyse-toggle" />
+        <label for="autolyse-toggle">Autolyse &amp; Bassinage</label>
+      </div>
+      <div id="autolyse-panel" class="form-grid">
+        <div class="field">
+          <label for="autolyse-water-pct">Autolyse-Wasser</label>
+          <div class="input-with-unit">
+            <input type="number" id="autolyse-water-pct" min="0" max="100" step="5" />
+            <span class="unit-label">% des Hauptteigwassers</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="bassinage-water-pct">Bassinage-Wasser</label>
+          <div class="input-with-unit">
+            <input type="number" id="bassinage-water-pct" min="0" max="100" step="5" />
+            <span class="unit-label">% des Hauptteigwassers</span>
+          </div>
+        </div>
+      </div>
+
+      <hr class="section-divider" style="margin: 1rem 0;" />
+
+      <!-- Fermentation -->
+      <div class="module-header">
+        <input type="checkbox" id="ferment-toggle" />
+        <label for="ferment-toggle">Gärzeit-Rechner</label>
+      </div>
+      <div id="ferment-panel" class="form-grid">
+        <div class="field full">
+          <label>Berechnungsrichtung</label>
+          <div class="radio-group">
+            <label><input type="radio" name="ferm-direction" id="direction-time" value="timeFromLevain" /> Levain% → Gärzeit</label>
+            <label><input type="radio" name="ferm-direction" id="direction-levain" value="levainFromTime" /> Zielzeit → Levain%</label>
+          </div>
+        </div>
+
+        <!-- group: time from levain -->
+        <div id="input-group-time" style="display:contents;">
+          <div class="field">
+            <label for="ferm-levain-pct">Levain-Anteil</label>
+            <div class="input-with-unit">
+              <input type="number" id="ferm-levain-pct" min="1" max="99" step="1" />
+              <span class="unit-label">%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- group: levain from time -->
+        <div id="input-group-levain" style="display:none;">
+          <div class="field">
+            <label for="ferm-target-hours">Ziel-Gärzeit</label>
+            <div class="input-with-unit">
+              <input type="number" id="ferm-target-hours" min="0.5" max="24" step="0.5" />
+              <span class="unit-label">Std.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="ferm-temperature">Temperatur</label>
+          <div class="input-with-unit">
+            <input type="number" id="ferm-temperature" min="10" max="40" step="0.5" />
+            <span class="unit-label">°C</span>
+          </div>
+        </div>
+
+        <div class="field full">
+          <label>Referenzpunkt</label>
+          <div class="form-grid" style="margin-top: 0.25rem;">
+            <div class="field">
+              <label for="ferm-ref-temp">Temperatur</label>
+              <div class="input-with-unit">
+                <input type="number" id="ferm-ref-temp" min="10" max="40" step="0.5" />
+                <span class="unit-label">°C</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="ferm-ref-levain">Levain-Anteil</label>
+              <div class="input-with-unit">
+                <input type="number" id="ferm-ref-levain" min="1" max="99" step="1" />
+                <span class="unit-label">%</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="ferm-ref-time">Gärzeit</label>
+              <div class="input-with-unit">
+                <input type="number" id="ferm-ref-time" min="0.5" max="24" step="0.5" />
+                <span class="unit-label">Std.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Ergebnis -->
+    <section class="card" id="results-section">
+      <div class="section-title">Ergebnis</div>
+      <ul class="result-errors" id="result-errors"></ul>
+      <div id="result-table" style="display:none;"></div>
+    </section>
+
+    <!-- 6. Export / Import -->
+    <section class="card" id="section-export">
+      <div class="section-title">Rezept speichern</div>
+      <div class="export-import-row">
+        <button type="button" class="btn primary" id="export-btn">↓ Exportieren</button>
+        <label class="import-label" for="import-input">↑ Importieren
+          <input type="file" id="import-input" accept=".json" />
+        </label>
+        <span class="import-error" id="import-error"></span>
+      </div>
+    </section>
+
+    <!-- 7. Berechnungen erklärt -->
+    <section id="section-explainer">
+      <button type="button" id="explainer-toggle">Berechnungen anzeigen ▾</button>
+      <div id="explainer-content">
+
+        <div class="explainer-block">
+          <h3>1. Bäckerprozente</h3>
+          <p>In der Bäckerei werden alle Zutaten relativ zur <strong>Gesamtmehlmenge</strong> (= 100%) angegeben. Beispiel:</p>
+          <ul>
+            <li>Mehl: 500 g = 100%</li>
+            <li>Wasser 72%: 360 g</li>
+            <li>Salz 2%: 10 g</li>
+          </ul>
+          <p style="margin-top:0.5rem;">Dadurch lässt sich jedes Rezept einfach skalieren, ohne die Verhältnisse zu ändern.</p>
+        </div>
+
+        <div class="explainer-block">
+          <h3>2. Gewichtete Hydrations-Empfehlung</h3>
+          <p>Bei einer Mehlmischung berechnet der Kalkulator eine gewichtete Empfehlung:</p>
+          <pre>Empfehlung = Σ (Mehlanteil_i / 100 × Absorptionsmittelwert_i)</pre>
+          <p>Beispiel: 60% Ruchmehl (67.5%) + 40% Roggen hell (78.5%) = <code>0.6×67.5 + 0.4×78.5 = 71.9%</code>. Dies ist eine Richtwert — die effektive Hydration bestimmst du selbst.</p>
+        </div>
+
+        <div class="explainer-block">
+          <h3>3. Levain-Mehl und -Wasser</h3>
+          <p>Der Levain enthält bereits Mehl und Wasser, die aus dem Hauptteig stammen. Diese werden abgezogen:</p>
+          <pre>Mehl im Levain  = Levain-Total / (1 + Hydration_Levain / 100)
+Wasser im Levain = Levain-Total − Mehl im Levain
+Hauptteigwasser  = Gesamtwasser − Wasser im Levain</pre>
+          <p>So bleibt die Gesamthydration des Teigs korrekt.</p>
+        </div>
+
+        <div class="explainer-block">
+          <h3>4. Autolyse &amp; Bassinage</h3>
+          <p><strong>Autolyse:</strong> Mehl und ein Teil des Wassers werden vor der Hauptmischung vermengt und ruhen gelassen. Gluten bildet sich vor, der Teig wird dehnbarer. Kein Salz, kein Levain in dieser Phase.</p>
+          <p style="margin-top:0.5rem;"><strong>Bassinage:</strong> Ein Teil des Wassers wird zurückbehalten und erst am Ende der Knetphase eingearbeitet. Hilft bei sehr weichen Teigen, die Struktur aufzubauen.</p>
+          <pre>Autolyse-Wasser  = Hauptteigwasser × Autolyse% / 100
+Bassinage-Wasser = Hauptteigwasser × Bassinage% / 100
+Restwasser       = Hauptteigwasser − Autolyse − Bassinage</pre>
+        </div>
+
+        <div class="explainer-block">
+          <h3>5. Gärzeit-Schätzung (Q10-Modell)</h3>
+          <p>Die Fermentationsgeschwindigkeit verdoppelt sich näherungsweise mit je 10°C mehr (Q10 = 2.0). Kombiniert mit dem Levain-Anteil ergibt sich:</p>
+          <pre>geschätzte_Zeit = Referenzzeit
+                  × (Referenz-Levain% / Levain%)
+                  × Q10^((Referenztemperatur − Temperatur) / 10)</pre>
+          <p><strong>Hinweis:</strong> Dies ist eine Näherung. Die tatsächliche Gärzeit hängt auch von der Aktivität des Starters, dem Mehltyp und der Teigstärke ab. Der Referenzpunkt sollte auf eigenen Erfahrungswerten basieren.</p>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
