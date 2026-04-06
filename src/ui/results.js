@@ -14,9 +14,9 @@ function formatHours(hours) {
 export function initResults(section) {
     const errorsEl = section.querySelector('#result-errors');
     const tableEl = section.querySelector('#result-table');
-    subscribe((result) => renderResults(result, errorsEl, tableEl));
+    subscribe((result, input) => renderResults(result, input, errorsEl, tableEl));
 }
-function renderResults(result, errorsEl, tableEl) {
+function renderResults(result, input, errorsEl, tableEl) {
     if (!result.valid) {
         errorsEl.innerHTML = result.errors.map(e => `<li>${e}</li>`).join('');
         errorsEl.style.display = 'block';
@@ -33,6 +33,7 @@ function renderResults(result, errorsEl, tableEl) {
     ${mainDoughBlock(result)}
     ${result.doughSplit ? doughSplitBlock(result.doughSplit) : ''}
     ${summaryBar(result)}
+    ${input.steps.length > 0 ? stepsBlock(input.steps) : ''}
   `;
 }
 // ─── Levain block ────────────────────────────────────────────────────────────
@@ -172,6 +173,14 @@ function doughSplitBlock(split) {
         ? subRow('Teigverlust (Beschnitt)', g(split.trimLoss))
         : '';
     return block('Teigaufteilung', `${pieceRows}${trimRow}`);
+}
+// ─── Steps block ─────────────────────────────────────────────────────────────
+function stepsBlock(steps) {
+    const items = steps
+        .filter(s => s.trim().length > 0)
+        .map((s, i) => `<div class="result-step"><span class="result-step-num">${i + 1}.</span><span>${s}</span></div>`)
+        .join('');
+    return `<div class="result-block"><div class="result-block-title">Anleitung</div><div class="result-steps">${items}</div></div>`;
 }
 // ─── Warnings block ──────────────────────────────────────────────────────────
 function warningsBlock(warnings) {

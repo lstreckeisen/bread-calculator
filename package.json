@@ -12,5 +12,8 @@
     "typescript": "^6.0.2",
     "vite": "^8.0.3"
   },
-  "packageManager": "yarn@4.13.0"
+  "packageManager": "yarn@4.13.0",
+  "dependencies": {
+    "jspdf": "^4.2.1"
+  }
 }

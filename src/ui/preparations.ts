@@ -27,24 +27,6 @@ function renderQuellstueckRow(entry: QuellstueckEntry, container: HTMLElement): 
   amtLabel.className = 'unit-label'
   amtLabel.textContent = 'g'
 
-  const absLabel = document.createElement('label')
-  absLabel.className = 'qs-abs-label'
-
-  const absInput = document.createElement('input')
-  absInput.type = 'number'
-  absInput.className = 'input-number qs-abs-pct'
-  absInput.min = '0'
-  absInput.max = '100'
-  absInput.step = '10'
-  absInput.value = String(entry.absorptionPct)
-
-  const absUnit = document.createElement('span')
-  absUnit.className = 'unit-label'
-  absUnit.textContent = '% absorbiert'
-
-  absLabel.appendChild(absInput)
-  absLabel.appendChild(absUnit)
-
   const removeBtn = document.createElement('button')
   removeBtn.type = 'button'
   removeBtn.className = 'btn-icon remove-qs'
@@ -54,13 +36,11 @@ function renderQuellstueckRow(entry: QuellstueckEntry, container: HTMLElement): 
   row.appendChild(nameInput)
   row.appendChild(amountInput)
   row.appendChild(amtLabel)
-  row.appendChild(absLabel)
   row.appendChild(removeBtn)
 
   const update = () => updatePreparations(container)
   nameInput.addEventListener('input', update)
   amountInput.addEventListener('input', update)
-  absInput.addEventListener('input', update)
   removeBtn.addEventListener('click', () => { row.remove(); updatePreparations(container) })
 
   return row
@@ -70,14 +50,7 @@ function readQuellstueckRows(container: HTMLElement): QuellstueckEntry[] {
   return Array.from(container.querySelectorAll<HTMLElement>('.qs-row')).map(row => ({
     name: row.querySelector<HTMLInputElement>('.qs-name')!.value.trim(),
     grams: parseFloat(row.querySelector<HTMLInputElement>('.qs-amount')!.value) || 0,
-    absorptionPct: parseFloat(row.querySelector<HTMLInputElement>('.qs-abs-pct')!.value) || 0,
   }))
-}
-
-function setAllAbsorption(container: HTMLElement, pct: number) {
-  container.querySelectorAll<HTMLInputElement>('.qs-abs-pct').forEach(inp => {
-    inp.value = String(pct)
-  })
 }
 
 // ─── Main update ─────────────────────────────────────────────────────────────
@@ -154,8 +127,6 @@ export function initPreparations(section: HTMLElement): void {
   const qsRowsContainer = section.querySelector<HTMLElement>('#quellstueck-rows')!
   const addQsBtn = section.querySelector<HTMLButtonElement>('#add-quellstueck-btn')!
   const qsWaterInput = section.querySelector<HTMLInputElement>('#quellstueck-water')!
-  const absorbAllBtn  = section.querySelector<HTMLButtonElement>('#quellstueck-absorb-all')!
-  const absorbNoneBtn = section.querySelector<HTMLButtonElement>('#quellstueck-absorb-none')!
 
   const qs = state.preparations.quellstueck
   qsToggle.checked = qs.enabled
@@ -171,17 +142,9 @@ export function initPreparations(section: HTMLElement): void {
   qsWaterInput.addEventListener('input', () => updatePreparations(qsRowsContainer))
 
   addQsBtn.addEventListener('click', () => {
-    const newEntry: QuellstueckEntry = { name: '', grams: 0, absorptionPct: 100 }
+    const newEntry: QuellstueckEntry = { name: '', grams: 0 }
     qsRowsContainer.appendChild(renderQuellstueckRow(newEntry, qsRowsContainer))
     updatePreparations(qsRowsContainer)
   })
 
-  absorbAllBtn.addEventListener('click', () => {
-    setAllAbsorption(qsRowsContainer, 100)
-    updatePreparations(qsRowsContainer)
-  })
-  absorbNoneBtn.addEventListener('click', () => {
-    setAllAbsorption(qsRowsContainer, 0)
-    updatePreparations(qsRowsContainer)
-  })
 }

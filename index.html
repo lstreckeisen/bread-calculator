@@ -12,6 +12,9 @@
     <!-- Header -->
     <header>
       <h1>Brot-Kalkulator <span>/ Sauerteig</span></h1>
+      <div class="recipe-name-bar">
+        <input type="text" id="recipe-name" placeholder="Rezeptname (optional)" autocomplete="off" />
+      </div>
     </header>
 
     <!-- 1. Mehlmischung -->
@@ -295,7 +298,7 @@
       <!-- Kochstück -->
       <div class="module-header">
         <input type="checkbox" id="kochstueck-toggle" />
-        <label for="kochstueck-toggle">Kochstück (Tangzhong)</label>
+        <label for="kochstueck-toggle">Kochstück</label>
       </div>
       <div id="kochstueck-panel" style="display:none;">
         <div class="form-grid">
@@ -328,7 +331,7 @@
       <!-- Quellstück -->
       <div class="module-header">
         <input type="checkbox" id="quellstueck-toggle" />
-        <label for="quellstueck-toggle">Quellstück (Soaker)</label>
+        <label for="quellstueck-toggle">Quellstück</label>
       </div>
       <div id="quellstueck-panel" style="display:none;">
         <div id="quellstueck-rows"></div>
@@ -340,10 +343,7 @@
               <input type="number" id="quellstueck-water" min="0" max="9999" step="1" />
               <span class="unit-label">g</span>
             </div>
-          </div>
-          <div class="field full" style="margin-top: 0.25rem;">
-            <button type="button" class="btn" id="quellstueck-absorb-all">Alles absorbiert</button>
-            <button type="button" class="btn" id="quellstueck-absorb-none">Nichts absorbiert</button>
+            <div class="hint">Das Quellwasser wird vollständig vom Hauptteigwasser abgezogen.</div>
           </div>
         </div>
       </div>
@@ -456,7 +456,7 @@
           </div>
         </div>
         <div class="field full" id="malt-hint" style="display:none;">
-          <div class="hint">Achtung: Aktives Backmalz kann die Gärzeit verkürzen. Das Q10-Modell berücksichtigt dies nicht — Referenzpunkt nach eigener Erfahrung anpassen.</div>
+          <div class="hint">Achtung: Aktives Backmalz kann die Gärzeit verkürzen. Das Q10-Modell berücksichtigt dies nicht — tatsächliche Gärzeit kann kürzer sein.</div>
         </div>
       </div>
 
@@ -473,33 +473,6 @@
           <div class="input-with-unit">
             <input type="number" id="ferm-temperature" min="10" max="40" step="0.5" />
             <span class="unit-label">°C</span>
-          </div>
-        </div>
-
-        <div class="field full">
-          <label>Referenzpunkt</label>
-          <div class="form-grid" style="margin-top: 0.25rem;">
-            <div class="field">
-              <label for="ferm-ref-temp">Temperatur</label>
-              <div class="input-with-unit">
-                <input type="number" id="ferm-ref-temp" min="10" max="40" step="0.5" />
-                <span class="unit-label">°C</span>
-              </div>
-            </div>
-            <div class="field">
-              <label for="ferm-ref-levain">Levain-Anteil</label>
-              <div class="input-with-unit">
-                <input type="number" id="ferm-ref-levain" min="1" max="99" step="1" />
-                <span class="unit-label">%</span>
-              </div>
-            </div>
-            <div class="field">
-              <label for="ferm-ref-time">Gärzeit</label>
-              <div class="input-with-unit">
-                <input type="number" id="ferm-ref-time" min="0.5" max="24" step="0.5" />
-                <span class="unit-label">Std.</span>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -536,31 +509,8 @@
               <span class="unit-label">°C</span>
             </div>
           </div>
-          <div class="field full">
-            <label>Referenzpunkt</label>
-            <div class="form-grid" style="margin-top:0.25rem;">
-              <div class="field">
-                <label for="stuck-ref-temp">Temperatur</label>
-                <div class="input-with-unit">
-                  <input type="number" id="stuck-ref-temp" min="1" max="40" step="0.5" />
-                  <span class="unit-label">°C</span>
-                </div>
-              </div>
-              <div class="field">
-                <label for="stuck-ref-levain">Levain-Anteil</label>
-                <div class="input-with-unit">
-                  <input type="number" id="stuck-ref-levain" min="1" max="99" step="1" />
-                  <span class="unit-label">%</span>
-                </div>
-              </div>
-              <div class="field">
-                <label for="stuck-ref-time">Stückgare-Zeit</label>
-                <div class="input-with-unit">
-                  <input type="number" id="stuck-ref-time" min="0.25" max="24" step="0.25" />
-                  <span class="unit-label">Std.</span>
-                </div>
-              </div>
-            </div>
+          <div class="field full" id="stuck-piece-weight-hint" style="display:none;">
+            <div class="hint">Stückgewicht wird automatisch aus der Teigaufteilung übernommen (konservativstes Stück).</div>
           </div>
 
           <!-- Reverse: how much levain for a target proof duration? -->
@@ -579,21 +529,6 @@
               </div>
             </div>
           </div>
-
-          <div class="field full">
-            <label class="checkbox-label">
-              <input type="checkbox" id="stuck-use-piece-weight" />
-              Stückgewicht berücksichtigen
-            </label>
-            <div class="hint">Kleinere Stücke gären schneller (Oberflächen-Volumen-Verhältnis). Teigaufteilung muss aktiviert sein.</div>
-          </div>
-          <div class="field">
-            <label for="stuck-ref-piece-weight">Referenz-Stückgewicht</label>
-            <div class="input-with-unit">
-              <input type="number" id="stuck-ref-piece-weight" min="100" max="5000" step="50" />
-              <span class="unit-label">g</span>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -605,11 +540,19 @@
       <div id="result-table" style="display:none;"></div>
     </section>
 
-    <!-- 6. Export / Import -->
+    <!-- 6. Anleitung -->
+    <section class="card" id="section-anleitung">
+      <div class="section-title">Anleitung</div>
+      <ol id="anleitung-steps"></ol>
+      <button type="button" class="btn" id="add-step-btn">+ Schritt hinzufügen</button>
+    </section>
+
+    <!-- 7. Export / Import -->
     <section class="card" id="section-export">
       <div class="section-title">Rezept speichern</div>
       <div class="export-import-row">
-        <button type="button" class="btn primary" id="export-btn">↓ Exportieren</button>
+        <button type="button" class="btn primary" id="export-btn">↓ JSON exportieren</button>
+        <button type="button" class="btn primary" id="pdf-btn">↓ PDF exportieren</button>
         <label class="import-label" for="import-input">↑ Importieren
           <input type="file" id="import-input" accept=".json" />
         </label>
@@ -664,7 +607,7 @@ Restwasser       = Hauptteigwasser − Autolyse − Bassinage</pre>
           <pre>geschätzte_Zeit = Referenzzeit
                   × (Referenz-Levain% / Levain%)
                   × Q10^((Referenztemperatur − Temperatur) / 10)</pre>
-          <p><strong>Hinweis:</strong> Dies ist eine Näherung. Die tatsächliche Gärzeit hängt auch von der Aktivität des Starters, dem Mehltyp und der Teigstärke ab. Der Referenzpunkt sollte auf eigenen Erfahrungswerten basieren.</p>
+          <p><strong>Hinweis:</strong> Dies ist eine Näherung. Die tatsächliche Gärzeit hängt auch von der Aktivität des Starters, dem Mehltyp und der Teigstärke ab. Das Modell verwendet feste Referenzwerte (20°C, 20% Levain, 4 Std. Stockgare / 1.5 Std. Stückgare) als Kalibrierungsbasis.</p>
         </div>
 
       </div>

@@ -45,18 +45,12 @@ export function initOptionalModules(section: HTMLElement): void {
   const fermentPanel = initCollapsible(section, 'ferment-toggle', 'ferment-panel')
 
   const temperatureInput    = fermentPanel.querySelector<HTMLInputElement>('#ferm-temperature')!
-  const refTempInput        = fermentPanel.querySelector<HTMLInputElement>('#ferm-ref-temp')!
-  const refLevainInput      = fermentPanel.querySelector<HTMLInputElement>('#ferm-ref-levain')!
-  const refTimeInput        = fermentPanel.querySelector<HTMLInputElement>('#ferm-ref-time')!
   const levainTargetToggle  = fermentPanel.querySelector<HTMLInputElement>('#ferm-levain-target-toggle')!
   const levainTargetPanel   = fermentPanel.querySelector<HTMLElement>('#ferm-levain-target-panel')!
   const targetHoursInput    = fermentPanel.querySelector<HTMLInputElement>('#ferm-target-hours')!
 
   const f = state.fermentation
   temperatureInput.value  = String(f.temperature)
-  refTempInput.value      = String(f.referenceTemp)
-  refLevainInput.value    = String(f.referenceLevainPct)
-  refTimeInput.value      = String(f.referenceTimeHours)
   levainTargetToggle.checked = f.levainTarget.enabled
   levainTargetPanel.style.display = f.levainTarget.enabled ? 'contents' : 'none'
   targetHoursInput.value  = String(f.levainTarget.targetHours)
@@ -70,9 +64,6 @@ export function initOptionalModules(section: HTMLElement): void {
     const cfg: FermentationConfig = {
       enabled: fermentToggle.checked,
       temperature: parseFloat(temperatureInput.value) || 20,
-      referenceTemp: parseFloat(refTempInput.value) || 20,
-      referenceLevainPct: parseFloat(refLevainInput.value) || 20,
-      referenceTimeHours: parseFloat(refTimeInput.value) || 4,
       levainTarget: {
         enabled: levainTargetToggle.checked,
         targetHours: parseFloat(targetHoursInput.value) || 4,
@@ -87,39 +78,27 @@ export function initOptionalModules(section: HTMLElement): void {
     stuckgareSubmoduleEl.style.display = fermentToggle.checked ? 'block' : 'none'
   })
   temperatureInput.addEventListener('input', updateFermentation)
-  refTempInput.addEventListener('input', updateFermentation)
-  refLevainInput.addEventListener('input', updateFermentation)
-  refTimeInput.addEventListener('input', updateFermentation)
   targetHoursInput.addEventListener('input', updateFermentation)
 
   // --- Stückgare ---
   const stuckgareSubmoduleEl = section.querySelector<HTMLElement>('#stuckgare-submodule')!
   stuckgareSubmoduleEl.style.display = f.enabled ? 'block' : 'none'
 
-  const stuckgareToggle       = section.querySelector<HTMLInputElement>('#stuckgare-toggle')!
-  const stuckgarePanel        = section.querySelector<HTMLElement>('#stuckgare-panel')!
-  const stuckTemperature      = section.querySelector<HTMLInputElement>('#stuck-temperature')!
-  const stuckRefTemp          = section.querySelector<HTMLInputElement>('#stuck-ref-temp')!
-  const stuckRefLevain        = section.querySelector<HTMLInputElement>('#stuck-ref-levain')!
-  const stuckRefTime          = section.querySelector<HTMLInputElement>('#stuck-ref-time')!
+  const stuckgareToggle         = section.querySelector<HTMLInputElement>('#stuckgare-toggle')!
+  const stuckgarePanel          = section.querySelector<HTMLElement>('#stuckgare-panel')!
+  const stuckTemperature        = section.querySelector<HTMLInputElement>('#stuck-temperature')!
   const stuckLevainTargetToggle = section.querySelector<HTMLInputElement>('#stuck-levain-target-toggle')!
   const stuckLevainTargetPanel  = section.querySelector<HTMLElement>('#stuck-levain-target-panel')!
-  const stuckTargetHours      = section.querySelector<HTMLInputElement>('#stuck-target-hours')!
-  const stuckUsePieceWeight   = section.querySelector<HTMLInputElement>('#stuck-use-piece-weight')!
-  const stuckRefPieceWeight   = section.querySelector<HTMLInputElement>('#stuck-ref-piece-weight')!
+  const stuckTargetHours        = section.querySelector<HTMLInputElement>('#stuck-target-hours')!
+  const stuckPieceWeightHint    = section.querySelector<HTMLElement>('#stuck-piece-weight-hint')!
 
   const sg = f.stuckgare
   stuckgareToggle.checked = sg.enabled
   stuckgarePanel.style.display = sg.enabled ? 'grid' : 'none'
-  stuckTemperature.value  = String(sg.temperature)
-  stuckRefTemp.value      = String(sg.referenceTemp)
-  stuckRefLevain.value    = String(sg.referenceLevainPct)
-  stuckRefTime.value      = String(sg.referenceTimeHours)
+  stuckTemperature.value = String(sg.temperature)
   stuckLevainTargetToggle.checked = sg.levainTarget.enabled
   stuckLevainTargetPanel.style.display = sg.levainTarget.enabled ? 'contents' : 'none'
-  stuckTargetHours.value  = String(sg.levainTarget.targetHours)
-  stuckUsePieceWeight.checked = sg.usePieceWeight
-  stuckRefPieceWeight.value   = String(sg.referencePieceWeightG)
+  stuckTargetHours.value = String(sg.levainTarget.targetHours)
 
   stuckLevainTargetToggle.addEventListener('change', () => {
     stuckLevainTargetPanel.style.display = stuckLevainTargetToggle.checked ? 'contents' : 'none'
@@ -130,15 +109,10 @@ export function initOptionalModules(section: HTMLElement): void {
     return {
       enabled: stuckgareToggle.checked,
       temperature: parseFloat(stuckTemperature.value) || 20,
-      referenceTemp: parseFloat(stuckRefTemp.value) || 20,
-      referenceLevainPct: parseFloat(stuckRefLevain.value) || 20,
-      referenceTimeHours: parseFloat(stuckRefTime.value) || 1.5,
       levainTarget: {
         enabled: stuckLevainTargetToggle.checked,
         targetHours: parseFloat(stuckTargetHours.value) || 2,
       },
-      usePieceWeight: stuckUsePieceWeight.checked,
-      referencePieceWeightG: parseFloat(stuckRefPieceWeight.value) || 800,
     }
   }
 
@@ -152,12 +126,13 @@ export function initOptionalModules(section: HTMLElement): void {
     updateStuckgare()
   })
   stuckTemperature.addEventListener('input', updateStuckgare)
-  stuckRefTemp.addEventListener('input', updateStuckgare)
-  stuckRefLevain.addEventListener('input', updateStuckgare)
-  stuckRefTime.addEventListener('input', updateStuckgare)
   stuckTargetHours.addEventListener('input', updateStuckgare)
-  stuckUsePieceWeight.addEventListener('change', updateStuckgare)
-  stuckRefPieceWeight.addEventListener('input', updateStuckgare)
+
+  // Show hint when dough split provides piece weight
+  subscribe((result) => {
+    const hasPieceWeight = result.doughSplit !== null
+    stuckPieceWeightHint.style.display = hasPieceWeight && stuckgareToggle.checked ? 'block' : 'none'
+  })
 
   // --- Honig ---
   const honeyToggle = section.querySelector<HTMLInputElement>('#honey-toggle')!

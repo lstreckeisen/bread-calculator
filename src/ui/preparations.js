@@ -19,20 +19,6 @@ function renderQuellstueckRow(entry, container) {
     const amtLabel = document.createElement('span');
     amtLabel.className = 'unit-label';
     amtLabel.textContent = 'g';
-    const absLabel = document.createElement('label');
-    absLabel.className = 'qs-abs-label';
-    const absInput = document.createElement('input');
-    absInput.type = 'number';
-    absInput.className = 'input-number qs-abs-pct';
-    absInput.min = '0';
-    absInput.max = '100';
-    absInput.step = '10';
-    absInput.value = String(entry.absorptionPct);
-    const absUnit = document.createElement('span');
-    absUnit.className = 'unit-label';
-    absUnit.textContent = '% absorbiert';
-    absLabel.appendChild(absInput);
-    absLabel.appendChild(absUnit);
     const removeBtn = document.createElement('button');
     removeBtn.type = 'button';
     removeBtn.className = 'btn-icon remove-qs';
@@ -41,12 +27,10 @@ function renderQuellstueckRow(entry, container) {
     row.appendChild(nameInput);
     row.appendChild(amountInput);
     row.appendChild(amtLabel);
-    row.appendChild(absLabel);
     row.appendChild(removeBtn);
     const update = () => updatePreparations(container);
     nameInput.addEventListener('input', update);
     amountInput.addEventListener('input', update);
-    absInput.addEventListener('input', update);
     removeBtn.addEventListener('click', () => { row.remove(); updatePreparations(container); });
     return row;
 }
@@ -54,13 +38,7 @@ function readQuellstueckRows(container) {
     return Array.from(container.querySelectorAll('.qs-row')).map(row => ({
         name: row.querySelector('.qs-name').value.trim(),
         grams: parseFloat(row.querySelector('.qs-amount').value) || 0,
-        absorptionPct: parseFloat(row.querySelector('.qs-abs-pct').value) || 0,
     }));
-}
-function setAllAbsorption(container, pct) {
-    container.querySelectorAll('.qs-abs-pct').forEach(inp => {
-        inp.value = String(pct);
-    });
 }
 // ─── Main update ─────────────────────────────────────────────────────────────
 function updatePreparations(qsRowsContainer) {
@@ -120,8 +98,6 @@ export function initPreparations(section) {
     const qsRowsContainer = section.querySelector('#quellstueck-rows');
     const addQsBtn = section.querySelector('#add-quellstueck-btn');
     const qsWaterInput = section.querySelector('#quellstueck-water');
-    const absorbAllBtn = section.querySelector('#quellstueck-absorb-all');
-    const absorbNoneBtn = section.querySelector('#quellstueck-absorb-none');
     const qs = state.preparations.quellstueck;
     qsToggle.checked = qs.enabled;
     qsPanel.style.display = qs.enabled ? 'block' : 'none';
@@ -133,16 +109,8 @@ export function initPreparations(section) {
     });
     qsWaterInput.addEventListener('input', () => updatePreparations(qsRowsContainer));
     addQsBtn.addEventListener('click', () => {
-        const newEntry = { name: '', grams: 0, absorptionPct: 100 };
+        const newEntry = { name: '', grams: 0 };
         qsRowsContainer.appendChild(renderQuellstueckRow(newEntry, qsRowsContainer));
-        updatePreparations(qsRowsContainer);
-    });
-    absorbAllBtn.addEventListener('click', () => {
-        setAllAbsorption(qsRowsContainer, 100);
-        updatePreparations(qsRowsContainer);
-    });
-    absorbNoneBtn.addEventListener('click', () => {
-        setAllAbsorption(qsRowsContainer, 0);
         updatePreparations(qsRowsContainer);
     });
 }

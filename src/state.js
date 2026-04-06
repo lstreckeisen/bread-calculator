@@ -1,5 +1,6 @@
 import { calculate } from './calc/recipe';
 const DEFAULT_STATE = {
+    recipeName: '',
     hydration: 72,
     saltPct: 2,
     flourBlend: [
@@ -20,19 +21,11 @@ const DEFAULT_STATE = {
     fermentation: {
         enabled: false,
         temperature: 22,
-        referenceTemp: 20,
-        referenceLevainPct: 20,
-        referenceTimeHours: 4,
         levainTarget: { enabled: false, targetHours: 4 },
         stuckgare: {
             enabled: false,
             temperature: 22,
-            referenceTemp: 20,
-            referenceLevainPct: 20,
-            referenceTimeHours: 1.5,
             levainTarget: { enabled: false, targetHours: 2 },
-            usePieceWeight: false,
-            referencePieceWeightG: 800,
         },
     },
     enrichments: {
@@ -63,6 +56,7 @@ const DEFAULT_STATE = {
             soakingWaterGrams: 0,
         },
     },
+    steps: [],
 };
 function loadInitialState() {
     const imported = sessionStorage.getItem('bread-import');

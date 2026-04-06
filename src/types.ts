@@ -93,21 +93,12 @@ export interface AutolyseConfig {
 export interface StuckgareConfig {
   enabled: boolean
   temperature: number
-  referenceTemp: number
-  referenceLevainPct: number
-  referenceTimeHours: number   // default 1.5
   levainTarget: { enabled: boolean; targetHours: number }  // reverse: how much levain for X hours?
-  usePieceWeight: boolean      // scale estimate by piece weight (requires dough split)
-  referencePieceWeightG: number // reference piece weight for the model (default 800)
 }
 
 export interface FermentationConfig {
   enabled: boolean
   temperature: number        // °C
-  // reference point
-  referenceTemp: number      // °C, default 20
-  referenceLevainPct: number // default 20
-  referenceTimeHours: number // default 4
   levainTarget: { enabled: boolean; targetHours: number }  // reverse: how much levain for X hours?
   // Stückgare (final proof)
   stuckgare: StuckgareConfig
@@ -128,7 +119,6 @@ export interface KochstueckConfig {
 export interface QuellstueckEntry {
   name: string
   grams: number
-  absorptionPct: number   // 0–100: how much of soaking water is absorbed into ingredients
 }
 
 export interface QuellstueckConfig {
@@ -193,6 +183,7 @@ export interface EnrichmentsConfig {
 // ---------------------------------------------------------------------------
 
 export interface RecipeInput {
+  recipeName: string         // user-defined recipe name, default ''
   hydration: number          // percent
   saltPct: number            // percent of total flour, default 2
   flourBlend: FlourBlendEntry[]
@@ -203,6 +194,7 @@ export interface RecipeInput {
   inclusions: InclusionsConfig
   doughSplit: DoughSplitConfig
   preparations: PreparationConfig
+  steps: string[]            // ordered baking instructions
 }
 
 // ---------------------------------------------------------------------------
@@ -302,6 +294,6 @@ export interface RecipeResult {
 // ---------------------------------------------------------------------------
 
 export interface RecipeExport {
-  version: 7
+  version: 1
   input: RecipeInput
 }

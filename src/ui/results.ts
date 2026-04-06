@@ -1,5 +1,5 @@
 import { subscribe } from '../state'
-import type { DoughSplitResult, KochstueckResult, QuellstueckResult, RecipeResult } from '../types'
+import type { DoughSplitResult, KochstueckResult, QuellstueckResult, RecipeResult, RecipeInput } from '../types'
 
 function g(value: number): string {
   return `${value.toFixed(1)} g`
@@ -16,10 +16,10 @@ function formatHours(hours: number): string {
 export function initResults(section: HTMLElement): void {
   const errorsEl = section.querySelector<HTMLElement>('#result-errors')!
   const tableEl = section.querySelector<HTMLElement>('#result-table')!
-  subscribe((result) => renderResults(result, errorsEl, tableEl))
+  subscribe((result, input) => renderResults(result, input, errorsEl, tableEl))
 }
 
-function renderResults(result: RecipeResult, errorsEl: HTMLElement, tableEl: HTMLElement): void {
+function renderResults(result: RecipeResult, input: RecipeInput, errorsEl: HTMLElement, tableEl: HTMLElement): void {
   if (!result.valid) {
     errorsEl.innerHTML = result.errors.map(e => `<li>${e}</li>`).join('')
     errorsEl.style.display = 'block'
@@ -37,6 +37,7 @@ function renderResults(result: RecipeResult, errorsEl: HTMLElement, tableEl: HTM
     ${mainDoughBlock(result)}
     ${result.doughSplit ? doughSplitBlock(result.doughSplit) : ''}
     ${summaryBar(result)}
+    ${input.steps.length > 0 ? stepsBlock(input.steps) : ''}
   `
 }
 
@@ -204,6 +205,16 @@ function doughSplitBlock(split: DoughSplitResult): string {
     ? subRow('Teigverlust (Beschnitt)', g(split.trimLoss))
     : ''
   return block('Teigaufteilung', `${pieceRows}${trimRow}`)
+}
+
+// ─── Steps block ─────────────────────────────────────────────────────────────
+
+function stepsBlock(steps: string[]): string {
+  const items = steps
+    .filter(s => s.trim().length > 0)
+    .map((s, i) => `<div class="result-step"><span class="result-step-num">${i + 1}.</span><span>${s}</span></div>`)
+    .join('')
+  return `<div class="result-block"><div class="result-block-title">Anleitung</div><div class="result-steps">${items}</div></div>`
 }
 
 // ─── Warnings block ──────────────────────────────────────────────────────────

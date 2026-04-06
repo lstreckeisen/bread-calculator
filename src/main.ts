@@ -10,8 +10,12 @@ import { initOptionalModules } from './ui/optionalModules'
 import { initResults } from './ui/results'
 import { initExportImport } from './ui/exportImport'
 import { initExplainer } from './ui/explainer'
+import { initRecipeHeader } from './ui/recipeHeader'
+import { initAnleitung } from './ui/anleitung'
+import { initPdfExport } from './ui/pdfExport'
 
 function init() {
+  initRecipeHeader(document.querySelector('header')!)
   initFlourBlend(document.getElementById('section-flour')!)
   initRecipeInputs(document.getElementById('section-recipe')!)
   initLevain(document.getElementById('section-levain')!)
@@ -20,7 +24,9 @@ function init() {
   initInclusions(document.getElementById('section-inclusions')!)
   initOptionalModules(document.getElementById('section-optional')!)
   initResults(document.getElementById('results-section')!)
+  initAnleitung(document.getElementById('section-anleitung')!)
   initExportImport(document.getElementById('section-export')!)
+  initPdfExport(document.getElementById('section-export')!)
   initExplainer(document.getElementById('section-explainer')!)
 
   // Fire initial render

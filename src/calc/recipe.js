@@ -207,10 +207,9 @@ export function calculate(input) {
     const fermentation = input.fermentation.enabled
         ? calcFermentation(input.fermentation, effectiveLevainPct, pieceWeightForProof)
         : null;
-    // Warn if usePieceWeight is on but no split is available
-    if (input.fermentation.enabled && input.fermentation.stuckgare.enabled &&
-        input.fermentation.stuckgare.usePieceWeight && !input.doughSplit.enabled) {
-        warnings.push('Stückgewicht-Skalierung aktiv, aber Teigaufteilung ist nicht aktiviert — Standardskalierung wird verwendet.');
+    // Warn if Stückgare piece weight scaling is requested but no dough split is configured
+    if (input.fermentation.enabled && input.fermentation.stuckgare.enabled && !input.doughSplit.enabled) {
+        warnings.push('Stückgare-Zeitschätzung ohne Teigaufteilung: Stückgewicht-Skalierung nicht möglich.');
     }
     // Warn when fermentation model is used with yeast modes
     if (input.fermentation.enabled) {

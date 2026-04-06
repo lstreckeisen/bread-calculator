@@ -74,7 +74,7 @@ h1 span {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.75rem var(--gap);
-  align-items: end;
+  align-items: start;
 }
 
 @media (max-width: 480px) {
@@ -486,4 +486,82 @@ input[type="file"] { display: none; }
   border: none;
   border-top: 1px solid var(--color-border);
   margin: 0.5rem 0;
+}
+
+/* ─── Recipe name bar ───────────────────────────────────────────────────── */
+.recipe-name-bar {
+  margin-top: 0.5rem;
+}
+.recipe-name-bar input {
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  border-radius: 0;
+  padding: 0.25rem 0;
+  background: transparent;
+  width: 100%;
+  max-width: 400px;
+  color: var(--color-text);
+}
+.recipe-name-bar input:focus {
+  outline: none;
+  border-bottom-color: var(--color-accent);
+}
+.recipe-name-bar input::placeholder { color: var(--color-text-muted); }
+
+/* ─── Anleitung (step list) ─────────────────────────────────────────────── */
+#anleitung-steps {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  counter-reset: step-counter;
+}
+.step-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  counter-increment: step-counter;
+}
+.step-row::before {
+  content: counter(step-counter) ".";
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  min-width: 1.5rem;
+  padding-top: 0.5rem;
+}
+.step-row .step-text {
+  flex: 1;
+  resize: vertical;
+  min-height: 2.5rem;
+  padding: 0.4rem 0.6rem;
+  font-family: var(--font);
+  font-size: 0.9rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+.step-row .step-text:focus { outline: none; border-color: var(--color-accent); }
+.step-row .btn-icon { margin-top: 2px; }
+
+/* ─── Result steps block ────────────────────────────────────────────────── */
+.result-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+}
+.result-step {
+  display: flex;
+  gap: 0.5rem;
+}
+.result-step-num {
+  font-weight: 600;
+  min-width: 1.5rem;
+  color: var(--color-accent);
 }
