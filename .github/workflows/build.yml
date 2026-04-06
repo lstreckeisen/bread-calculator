@@ -7,21 +7,71 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '24'
       - name: Enable corepack
         run: corepack enable
+      - name: Read package version
+        id: version
+        run: echo "version=$(node -p \"require('./package.json').version\")" >> "$GITHUB_OUTPUT"
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Build
         run: yarn build
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: webpage-assets
           path: dist/
           retention-days: 5
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          name: webpage-assets
+          path: dist
+      - name: Checkout Source-Repo
+        uses: actions/checkout@v6
+        with:
+          path: source-repo
+      - name: Checkout Deployment-Repo
+        uses: actions/checkout@v6
+        with:
+          repository: 'lstreckeisen/bread-calculator-deployment'
+          token: ${{ secrets.DEPLOY_REPO_TOKEN }}
+          path: deployment-repo
+      - name: Copy webpage assets to deployment repo
+        run: |
+          rm -rf deployment-repo/*
+          cp -R dist/* deployment-repo/
+
+      - name: Commit and push changes
+        working-directory: deployment-repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Deploy bread-calculator v${{ needs.build.outputs.version }}"
+          git push
+          git tag "v${{ needs.build.outputs.version }}"
+          git push origin "v${{ needs.build.outputs.version }}"
+
+      - name: Create tag for version number
+        working-directory: source-repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag "v${{ needs.build.outputs.version }}"
+          git push origin "v${{ needs.build.outputs.version }}"
