@@ -43,73 +43,77 @@
       </div>
     </section>
 
-    <!-- 3. Levain -->
+    <!-- 3. Levain / Triebmittel -->
     <section class="card" id="section-levain">
-      <div class="section-title">Levain / Anstellgut</div>
-      <div class="mode-toggle">
-        <button type="button" id="levain-mode-a">A — Direktzugabe</button>
-        <button type="button" id="levain-mode-b">B — Levain-Aufbau</button>
+      <div class="section-title">Triebmittel</div>
+      <div class="mode-toggle mode-toggle-wrap">
+        <button type="button" id="levain-mode-sd-direct">Direktzugabe</button>
+        <button type="button" id="levain-mode-sd-build">Levain-Aufbau</button>
+        <button type="button" id="levain-mode-fresh">Frischhefe</button>
+        <button type="button" id="levain-mode-dry">Trockenhefe</button>
+        <button type="button" id="levain-mode-hybrid-yeast">Hybrid (Hefe-primär)</button>
+        <button type="button" id="levain-mode-hybrid-sd">Hybrid (ST-primär)</button>
       </div>
 
-      <!-- Mode A -->
+      <!-- sourdough-direct (was Mode A) -->
       <div id="levain-panel-a" class="form-grid">
         <div class="field full">
           <label>Mehlsorte im Anstellgut</label>
           <div class="flour-type-row">
-            <select id="levain-flour-grain-a" class="input-select"></select>
-            <select id="levain-flour-type-a" class="input-select"></select>
+            <select id="levain-flour-grain-a" class="input-select" data-levain-select></select>
+            <select id="levain-flour-type-a" class="input-select" data-levain-select></select>
           </div>
         </div>
         <div class="field">
           <label for="starter-hydration-a">Anstellgut-Hydration</label>
           <div class="input-with-unit">
-            <input type="number" id="starter-hydration-a" min="1" max="200" step="1" />
+            <input type="number" id="starter-hydration-a" min="1" max="200" step="1" data-levain-input />
             <span class="unit-label">%</span>
           </div>
         </div>
         <div class="field">
           <label for="levain-pct-a">Levain-Anteil</label>
           <div class="input-with-unit">
-            <input type="number" id="levain-pct-a" min="1" max="99" step="1" />
+            <input type="number" id="levain-pct-a" min="1" max="99" step="1" data-levain-input />
             <span class="unit-label">% vom Mehl</span>
           </div>
         </div>
       </div>
 
-      <!-- Mode B -->
-      <div id="levain-panel-b" class="form-grid">
+      <!-- sourdough-build (was Mode B) -->
+      <div id="levain-panel-b" class="form-grid" style="display:none;">
         <div class="field full">
           <label>Mehlsorte im Levain</label>
           <div class="flour-type-row">
-            <select id="levain-flour-grain-b" class="input-select"></select>
-            <select id="levain-flour-type-b" class="input-select"></select>
+            <select id="levain-flour-grain-b" class="input-select" data-levain-select></select>
+            <select id="levain-flour-type-b" class="input-select" data-levain-select></select>
           </div>
         </div>
         <div class="field">
           <label for="starter-hydration-b">Anstellgut-Hydration</label>
           <div class="input-with-unit">
-            <input type="number" id="starter-hydration-b" min="1" max="200" step="1" />
+            <input type="number" id="starter-hydration-b" min="1" max="200" step="1" data-levain-input />
             <span class="unit-label">%</span>
           </div>
         </div>
         <div class="field">
-          <label for="anstellgut-grams">Anstellgut-Menge</label>
+          <label for="anstellgut-grams-b">Anstellgut-Menge</label>
           <div class="input-with-unit">
-            <input type="number" id="anstellgut-grams" min="0" max="500" step="1" />
+            <input type="number" id="anstellgut-grams-b" min="0" max="500" step="1" data-levain-input />
             <span class="unit-label">g</span>
           </div>
         </div>
         <div class="field">
-          <label for="levain-flour-grams">Levain-Mehl</label>
+          <label for="levain-flour-grams-b">Levain-Mehl</label>
           <div class="input-with-unit">
-            <input type="number" id="levain-flour-grams" min="1" max="2000" step="1" />
+            <input type="number" id="levain-flour-grams-b" min="1" max="2000" step="1" data-levain-input />
             <span class="unit-label">g</span>
           </div>
         </div>
         <div class="field">
-          <label for="levain-hydration">Levain-Hydration</label>
+          <label for="levain-hydration-b">Levain-Hydration</label>
           <div class="input-with-unit">
-            <input type="number" id="levain-hydration" min="1" max="200" step="1" />
+            <input type="number" id="levain-hydration-b" min="1" max="200" step="1" data-levain-input />
             <span class="unit-label">%</span>
           </div>
           <div class="quick-btns" style="margin-top: 0.4rem;">
@@ -118,9 +122,275 @@
           </div>
         </div>
       </div>
+
+      <!-- fresh-yeast -->
+      <div id="levain-panel-fresh" class="form-grid" style="display:none;">
+        <div class="field">
+          <label for="fresh-yeast-grams">Frischhefe</label>
+          <div class="input-with-unit">
+            <input type="number" id="fresh-yeast-grams" min="0.1" max="500" step="0.5" data-levain-input />
+            <span class="unit-label">g</span>
+          </div>
+          <div class="hint" id="fresh-yeast-hint"></div>
+        </div>
+      </div>
+
+      <!-- dry-yeast -->
+      <div id="levain-panel-dry" class="form-grid" style="display:none;">
+        <div class="field">
+          <label for="dry-yeast-grams">Trockenhefe</label>
+          <div class="input-with-unit">
+            <input type="number" id="dry-yeast-grams" min="0.1" max="200" step="0.5" data-levain-input />
+            <span class="unit-label">g</span>
+          </div>
+          <div class="hint" id="dry-yeast-hint"></div>
+        </div>
+      </div>
+
+      <!-- hybrid-yeast-primary -->
+      <div id="levain-panel-hybrid-yeast" class="form-grid" style="display:none;">
+        <div class="field full">
+          <div class="hint">Hefe-primär: Hefe treibt den Teig — Sauerteig dient der Aromaentwicklung.</div>
+        </div>
+        <div class="field">
+          <label for="hybrid-yeast-type-yp">Hefetyp</label>
+          <select id="hybrid-yeast-type-yp" class="input-select" data-levain-select>
+            <option value="fresh-yeast">Frischhefe</option>
+            <option value="dry-yeast">Trockenhefe</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="hybrid-yeast-grams-yp">Hefemenge</label>
+          <div class="input-with-unit">
+            <input type="number" id="hybrid-yeast-grams-yp" min="0.1" max="500" step="0.5" data-levain-input />
+            <span class="unit-label">g</span>
+          </div>
+        </div>
+        <div class="field full">
+          <label>Sauerteig-Modus</label>
+          <select id="hybrid-sd-mode-yp" class="input-select" data-levain-select>
+            <option value="sourdough-direct">Direktzugabe</option>
+            <option value="sourdough-build">Levain-Aufbau</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label>Mehlsorte im Anstellgut</label>
+          <div class="flour-type-row">
+            <select id="levain-flour-grain-hy" class="input-select" data-levain-select></select>
+            <select id="levain-flour-type-hy" class="input-select" data-levain-select></select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="starter-hydration-hy">Anstellgut-Hydration</label>
+          <div class="input-with-unit">
+            <input type="number" id="starter-hydration-hy" min="1" max="200" step="1" value="50" data-levain-input />
+            <span class="unit-label">%</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="levain-pct-hy">Levain-Anteil</label>
+          <div class="input-with-unit">
+            <input type="number" id="levain-pct-hy" min="1" max="50" step="1" value="10" data-levain-input />
+            <span class="unit-label">% vom Mehl</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="anstellgut-grams-hy">Anstellgut-Menge</label>
+          <div class="input-with-unit">
+            <input type="number" id="anstellgut-grams-hy" min="0" max="500" step="1" value="20" data-levain-input />
+            <span class="unit-label">g</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="levain-flour-grams-hy">Levain-Mehl</label>
+          <div class="input-with-unit">
+            <input type="number" id="levain-flour-grams-hy" min="1" max="2000" step="1" value="50" data-levain-input />
+            <span class="unit-label">g</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="levain-hydration-hy">Levain-Hydration</label>
+          <div class="input-with-unit">
+            <input type="number" id="levain-hydration-hy" min="1" max="200" step="1" value="100" data-levain-input />
+            <span class="unit-label">%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- hybrid-sourdough-primary -->
+      <div id="levain-panel-hybrid-sd" class="form-grid" style="display:none;">
+        <div class="field full">
+          <div class="hint">Sauerteig-primär: Sauerteig treibt den Teig — Hefe verbessert die Zeitvorhersagbarkeit.</div>
+        </div>
+        <div class="field full">
+          <label>Mehlsorte im Anstellgut</label>
+          <div class="flour-type-row">
+            <select id="levain-flour-grain-hsd" class="input-select" data-levain-select></select>
+            <select id="levain-flour-type-hsd" class="input-select" data-levain-select></select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="starter-hydration-hsd">Anstellgut-Hydration</label>
+          <div class="input-with-unit">
+            <input type="number" id="starter-hydration-hsd" min="1" max="200" step="1" value="50" data-levain-input />
+            <span class="unit-label">%</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="levain-pct-hsd">Levain-Anteil</label>
+          <div class="input-with-unit">
+            <input type="number" id="levain-pct-hsd" min="1" max="99" step="1" value="20" data-levain-input />
+            <span class="unit-label">% vom Mehl</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="anstellgut-grams-hsd">Anstellgut-Menge</label>
+          <div class="input-with-unit">
+            <input type="number" id="anstellgut-grams-hsd" min="0" max="500" step="1" value="20" data-levain-input />
+            <span class="unit-label">g</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="levain-flour-grams-hsd">Levain-Mehl</label>
+          <div class="input-with-unit">
+            <input type="number" id="levain-flour-grams-hsd" min="1" max="2000" step="1" value="100" data-levain-input />
+            <span class="unit-label">g</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="levain-hydration-hsd">Levain-Hydration</label>
+          <div class="input-with-unit">
+            <input type="number" id="levain-hydration-hsd" min="1" max="200" step="1" value="100" data-levain-input />
+            <span class="unit-label">%</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Hefetyp</label>
+          <select id="hybrid-yeast-type-sdp" class="input-select" data-levain-select>
+            <option value="fresh-yeast">Frischhefe</option>
+            <option value="dry-yeast">Trockenhefe</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="hybrid-yeast-grams-sdp">Hefemenge</label>
+          <div class="input-with-unit">
+            <input type="number" id="hybrid-yeast-grams-sdp" min="0.1" max="500" step="0.5" value="2" data-levain-input />
+            <span class="unit-label">g</span>
+          </div>
+        </div>
+        <div class="field full">
+          <label>Sauerteig-Modus</label>
+          <select id="hybrid-sd-mode-sdp" class="input-select" data-levain-select>
+            <option value="sourdough-direct">Direktzugabe</option>
+            <option value="sourdough-build">Levain-Aufbau</option>
+          </select>
+        </div>
+      </div>
     </section>
 
-    <!-- 4. Optionale Module -->
+    <!-- 3b. Vorteige: Kochstück & Quellstück -->
+    <section class="card" id="section-preparations">
+      <div class="section-title">Vorteige</div>
+
+      <!-- Kochstück -->
+      <div class="module-header">
+        <input type="checkbox" id="kochstueck-toggle" />
+        <label for="kochstueck-toggle">Kochstück (Tangzhong)</label>
+      </div>
+      <div id="kochstueck-panel" style="display:none;">
+        <div class="form-grid">
+          <div class="field full">
+            <label>Mehlsorte</label>
+            <div class="flour-type-row">
+              <select id="kochstueck-flour-grain" class="input-select"></select>
+              <select id="kochstueck-flour-type" class="input-select"></select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="kochstueck-flour-grams">Mehlmenge</label>
+            <div class="input-with-unit">
+              <input type="number" id="kochstueck-flour-grams" min="1" max="9999" step="1" />
+              <span class="unit-label">g</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="kochstueck-water-grams">Wassermenge</label>
+            <div class="input-with-unit">
+              <input type="number" id="kochstueck-water-grams" min="1" max="9999" step="1" />
+              <span class="unit-label">g</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="section-divider" style="margin: 1rem 0;" />
+
+      <!-- Quellstück -->
+      <div class="module-header">
+        <input type="checkbox" id="quellstueck-toggle" />
+        <label for="quellstueck-toggle">Quellstück (Soaker)</label>
+      </div>
+      <div id="quellstueck-panel" style="display:none;">
+        <div id="quellstueck-rows"></div>
+        <button type="button" class="btn" id="add-quellstueck-btn">+ Zutat hinzufügen</button>
+        <div class="form-grid" style="margin-top: 0.75rem;">
+          <div class="field">
+            <label for="quellstueck-water">Quellwasser gesamt</label>
+            <div class="input-with-unit">
+              <input type="number" id="quellstueck-water" min="0" max="9999" step="1" />
+              <span class="unit-label">g</span>
+            </div>
+          </div>
+          <div class="field full" style="margin-top: 0.25rem;">
+            <button type="button" class="btn" id="quellstueck-absorb-all">Alles absorbiert</button>
+            <button type="button" class="btn" id="quellstueck-absorb-none">Nichts absorbiert</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Teigaufteilung -->
+    <section class="card" id="section-dough-split">
+      <div class="section-title">Teigaufteilung</div>
+      <div class="module-header">
+        <input type="checkbox" id="split-toggle" />
+        <label for="split-toggle">Teig aufteilen</label>
+      </div>
+      <div id="split-panel" style="display:none;">
+        <div class="form-grid">
+          <div class="field">
+            <label for="split-num-pieces">Anzahl Stücke</label>
+            <input type="number" id="split-num-pieces" min="1" max="20" step="1" value="2" />
+          </div>
+          <div class="field full">
+            <label>Aufteilungsmodus</label>
+            <div class="radio-group">
+              <label><input type="radio" name="split-mode" id="split-mode-equal" value="equal" checked /> Gleich gross</label>
+              <label><input type="radio" name="split-mode" id="split-mode-custom" value="custom" /> Individuelle Gewichte</label>
+            </div>
+          </div>
+          <div class="field full" id="split-hint"></div>
+        </div>
+        <div id="split-custom-weights" style="display:none;">
+          <div id="split-weight-rows"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4b. Saaten &amp; Einlagen -->
+    <section class="card" id="section-inclusions">
+      <div class="section-title">Saaten &amp; Einlagen</div>
+      <div class="module-header">
+        <input type="checkbox" id="inclusions-toggle" />
+        <label for="inclusions-toggle">Saaten &amp; Einlagen aktivieren</label>
+      </div>
+      <div id="inclusions-panel" style="display:none;">
+        <div id="inclusions-rows"></div>
+        <button type="button" class="btn" id="add-inclusion-btn">+ Zutat hinzufügen</button>
+      </div>
+    </section>
+
+    <!-- 5. Optionale Module  -->
     <section class="card" id="section-optional">
       <div class="section-title">Optionale Module</div>
 
@@ -148,44 +418,58 @@
 
       <hr class="section-divider" style="margin: 1rem 0;" />
 
-      <!-- Fermentation -->
+      <!-- Honig -->
+      <div class="module-header">
+        <input type="checkbox" id="honey-toggle" />
+        <label for="honey-toggle">Honig</label>
+      </div>
+      <div id="honey-panel" class="form-grid">
+        <div class="field">
+          <label for="honey-amount">Menge</label>
+          <div class="input-with-unit">
+            <input type="number" id="honey-amount" min="0" max="500" step="1" />
+            <button type="button" class="btn unit-toggle" id="honey-unit-toggle">g</button>
+          </div>
+        </div>
+      </div>
+
+      <hr class="section-divider" style="margin: 1rem 0;" />
+
+      <!-- Backmalz -->
+      <div class="module-header">
+        <input type="checkbox" id="malt-toggle" />
+        <label for="malt-toggle">Backmalz</label>
+      </div>
+      <div id="malt-panel" class="form-grid">
+        <div class="field">
+          <label for="malt-amount">Menge</label>
+          <div class="input-with-unit">
+            <input type="number" id="malt-amount" min="0" max="500" step="0.5" />
+            <button type="button" class="btn unit-toggle" id="malt-unit-toggle">g</button>
+          </div>
+        </div>
+        <div class="field full">
+          <label>Typ</label>
+          <div class="radio-group">
+            <label><input type="radio" name="malt-type" id="malt-type-inaktiv" value="inaktiv" /> Inaktiv (Röst-/Farbmalz)</label>
+            <label><input type="radio" name="malt-type" id="malt-type-aktiv" value="aktiv" /> Aktiv (diastatisch)</label>
+          </div>
+        </div>
+        <div class="field full" id="malt-hint" style="display:none;">
+          <div class="hint">Achtung: Aktives Backmalz kann die Gärzeit verkürzen. Das Q10-Modell berücksichtigt dies nicht — Referenzpunkt nach eigener Erfahrung anpassen.</div>
+        </div>
+      </div>
+
+      <hr class="section-divider" style="margin: 1rem 0;" />
+
+      <!-- Fermentation / Stockgare -->
       <div class="module-header">
         <input type="checkbox" id="ferment-toggle" />
         <label for="ferment-toggle">Gärzeit-Rechner</label>
       </div>
       <div id="ferment-panel" class="form-grid">
-        <div class="field full">
-          <label>Berechnungsrichtung</label>
-          <div class="radio-group">
-            <label><input type="radio" name="ferm-direction" id="direction-time" value="timeFromLevain" /> Levain% → Gärzeit</label>
-            <label><input type="radio" name="ferm-direction" id="direction-levain" value="levainFromTime" /> Zielzeit → Levain%</label>
-          </div>
-        </div>
-
-        <!-- group: time from levain -->
-        <div id="input-group-time" style="display:contents;">
-          <div class="field">
-            <label for="ferm-levain-pct">Levain-Anteil</label>
-            <div class="input-with-unit">
-              <input type="number" id="ferm-levain-pct" min="1" max="99" step="1" />
-              <span class="unit-label">%</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- group: levain from time -->
-        <div id="input-group-levain" style="display:none;">
-          <div class="field">
-            <label for="ferm-target-hours">Ziel-Gärzeit</label>
-            <div class="input-with-unit">
-              <input type="number" id="ferm-target-hours" min="0.5" max="24" step="0.5" />
-              <span class="unit-label">Std.</span>
-            </div>
-          </div>
-        </div>
-
         <div class="field">
-          <label for="ferm-temperature">Temperatur</label>
+          <label for="ferm-temperature">Raumtemperatur</label>
           <div class="input-with-unit">
             <input type="number" id="ferm-temperature" min="10" max="40" step="0.5" />
             <span class="unit-label">°C</span>
@@ -215,6 +499,99 @@
                 <input type="number" id="ferm-ref-time" min="0.5" max="24" step="0.5" />
                 <span class="unit-label">Std.</span>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reverse: how much levain for a target duration? -->
+        <div class="field full">
+          <label class="checkbox-label">
+            <input type="checkbox" id="ferm-levain-target-toggle" />
+            Wie viel Levain für eine bestimmte Gärzeit?
+          </label>
+        </div>
+        <div id="ferm-levain-target-panel" style="display:none; contents">
+          <div class="field">
+            <label for="ferm-target-hours">Ziel-Gärzeit</label>
+            <div class="input-with-unit">
+              <input type="number" id="ferm-target-hours" min="0.5" max="24" step="0.5" />
+              <span class="unit-label">Std.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stückgare (sub-module of Gärzeit-Rechner) -->
+      <div id="stuckgare-submodule" style="display:none; margin-top: 1rem;">
+        <hr class="section-divider" style="margin: 0 0 1rem 0;" />
+        <div class="module-header" style="margin-bottom:0.5rem;">
+          <input type="checkbox" id="stuckgare-toggle" />
+          <label for="stuckgare-toggle">Stückgare</label>
+        </div>
+        <div id="stuckgare-panel" class="form-grid">
+          <div class="field">
+            <label for="stuck-temperature">Raumtemperatur</label>
+            <div class="input-with-unit">
+              <input type="number" id="stuck-temperature" min="1" max="40" step="0.5" />
+              <span class="unit-label">°C</span>
+            </div>
+          </div>
+          <div class="field full">
+            <label>Referenzpunkt</label>
+            <div class="form-grid" style="margin-top:0.25rem;">
+              <div class="field">
+                <label for="stuck-ref-temp">Temperatur</label>
+                <div class="input-with-unit">
+                  <input type="number" id="stuck-ref-temp" min="1" max="40" step="0.5" />
+                  <span class="unit-label">°C</span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="stuck-ref-levain">Levain-Anteil</label>
+                <div class="input-with-unit">
+                  <input type="number" id="stuck-ref-levain" min="1" max="99" step="1" />
+                  <span class="unit-label">%</span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="stuck-ref-time">Stückgare-Zeit</label>
+                <div class="input-with-unit">
+                  <input type="number" id="stuck-ref-time" min="0.25" max="24" step="0.25" />
+                  <span class="unit-label">Std.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reverse: how much levain for a target proof duration? -->
+          <div class="field full">
+            <label class="checkbox-label">
+              <input type="checkbox" id="stuck-levain-target-toggle" />
+              Wie viel Levain für eine bestimmte Stückgare?
+            </label>
+          </div>
+          <div id="stuck-levain-target-panel" style="display:none; contents">
+            <div class="field">
+              <label for="stuck-target-hours">Ziel-Stückgare</label>
+              <div class="input-with-unit">
+                <input type="number" id="stuck-target-hours" min="0.25" max="24" step="0.25" />
+                <span class="unit-label">Std.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="field full">
+            <label class="checkbox-label">
+              <input type="checkbox" id="stuck-use-piece-weight" />
+              Stückgewicht berücksichtigen
+            </label>
+            <div class="hint">Kleinere Stücke gären schneller (Oberflächen-Volumen-Verhältnis). Teigaufteilung muss aktiviert sein.</div>
+          </div>
+          <div class="field">
+            <label for="stuck-ref-piece-weight">Referenz-Stückgewicht</label>
+            <div class="input-with-unit">
+              <input type="number" id="stuck-ref-piece-weight" min="100" max="5000" step="50" />
+              <span class="unit-label">g</span>
             </div>
           </div>
         </div>

@@ -4,7 +4,7 @@ export function initExportImport(section) {
     const importInput = section.querySelector('#import-input');
     const importError = section.querySelector('#import-error');
     exportBtn.addEventListener('click', () => {
-        const payload = { version: 1, input: getState() };
+        const payload = { version: 7, input: getState() };
         const json = JSON.stringify(payload, null, 2);
         const blob = new Blob([json], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
@@ -45,5 +45,5 @@ function isRecipeExport(value) {
     if (typeof value !== 'object' || value === null)
         return false;
     const v = value;
-    return v['version'] === 1 && typeof v['input'] === 'object' && v['input'] !== null;
+    return v['version'] === 7 && typeof v['input'] === 'object' && v['input'] !== null;
 }

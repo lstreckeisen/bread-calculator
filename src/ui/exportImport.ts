@@ -1,5 +1,5 @@
 import { getState } from '../state'
-import type { RecipeExport } from '../types'
+import type { RecipeExport, RecipeInput } from '../types'
 
 export function initExportImport(section: HTMLElement): void {
   const exportBtn = section.querySelector<HTMLButtonElement>('#export-btn')!
@@ -7,7 +7,7 @@ export function initExportImport(section: HTMLElement): void {
   const importError = section.querySelector<HTMLElement>('#import-error')!
 
   exportBtn.addEventListener('click', () => {
-    const payload: RecipeExport = { version: 1, input: getState() }
+    const payload: RecipeExport = { version: 7, input: getState() }
     const json = JSON.stringify(payload, null, 2)
     const blob = new Blob([json], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
@@ -47,5 +47,5 @@ export function initExportImport(section: HTMLElement): void {
 function isRecipeExport(value: unknown): value is RecipeExport {
   if (typeof value !== 'object' || value === null) return false
   const v = value as Record<string, unknown>
-  return v['version'] === 1 && typeof v['input'] === 'object' && v['input'] !== null
+  return v['version'] === 7 && typeof v['input'] === 'object' && v['input'] !== null
 }

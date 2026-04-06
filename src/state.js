@@ -6,7 +6,7 @@ const DEFAULT_STATE = {
         { grain: 'Weizen', type: 'Ruchmehl', grams: 500 },
     ],
     levain: {
-        mode: 'A',
+        mode: 'sourdough-direct',
         starterHydration: 50,
         levainPct: 20,
         flourGrain: 'Weizen',
@@ -19,13 +19,49 @@ const DEFAULT_STATE = {
     },
     fermentation: {
         enabled: false,
-        direction: 'timeFromLevain',
-        levainPct: 20,
-        targetHours: 4,
         temperature: 22,
         referenceTemp: 20,
         referenceLevainPct: 20,
         referenceTimeHours: 4,
+        levainTarget: { enabled: false, targetHours: 4 },
+        stuckgare: {
+            enabled: false,
+            temperature: 22,
+            referenceTemp: 20,
+            referenceLevainPct: 20,
+            referenceTimeHours: 1.5,
+            levainTarget: { enabled: false, targetHours: 2 },
+            usePieceWeight: false,
+            referencePieceWeightG: 800,
+        },
+    },
+    enrichments: {
+        honey: { enabled: false, amountG: 0 },
+        malt: { enabled: false, amountG: 0, maltType: 'inaktiv' },
+    },
+    inclusions: {
+        enabled: false,
+        entries: [],
+    },
+    doughSplit: {
+        enabled: false,
+        numPieces: 2,
+        mode: 'equal',
+        customWeights: [],
+    },
+    preparations: {
+        kochstueck: {
+            enabled: false,
+            flourGrain: 'Weizen',
+            flourType: 'Weissmehl',
+            flourGrams: 50,
+            waterGrams: 200,
+        },
+        quellstueck: {
+            enabled: false,
+            entries: [],
+            soakingWaterGrams: 0,
+        },
     },
 };
 function loadInitialState() {
